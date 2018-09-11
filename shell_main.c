@@ -4,6 +4,12 @@
 #include "parser_functions.h"
 
 int main() {
-    printf("git test");
-    parse();
+    char** arglist;
+    system("clear");
+    while (1) {
+        arglist = parse();
+        //printTokens(arglist, sizeof(arglist));
+        break;
+    }
+    return 0;
 }

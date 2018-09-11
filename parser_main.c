@@ -8,8 +8,20 @@ char** parse() {
     char ** bucket;			// array that holds all instruction tokens
 	char temp[256];			// used to split instruction tokens containing special characters
 	
-    while (1) {
-		printf("Please enter an instruction:");
+
+		char cwd[250];   				//	THIS IS THE PROMPT
+		char hostname[1024];			//
+        getcwd(cwd,250);  				//	 
+		hostname[1023] = '\0';			//
+		gethostname(hostname, 1023);	//
+		
+		printf(getenv("USER"));
+		printf("@");
+		printf(hostname);
+		printf(" :: ");
+		printf(cwd);
+		printf(">"); 					//
+
 
         int numI = 0;                // number of tokens in an instruction
 		
@@ -55,13 +67,12 @@ char** parse() {
 		
         } while ('\n' != getchar());    //until end of line is reached
 		
-		printTokens(bucket, numI);
+		//printTokens(bucket, numI);
 		
-    }  //until "exit" is read in
+      //until "exit" is read in
 	free(bucket);	//free dynamic memory
-    printf("Exiting...\n");
 
-    return 0;
+    return bucket;
 }
 
 //reallocates instruction array to hold another token,
