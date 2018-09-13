@@ -3,29 +3,27 @@
 #include <stdlib.h>
 #include "parser_functions.h"
 
-char** parse() {
+parseResult parse() {
     char token[256];      	// holds instruction token
     char ** bucket;			// array that holds all instruction tokens
 	char temp[256];			// used to split instruction tokens containing special characters
 	
-
-		char cwd[250];   				//	THIS IS THE PROMPT
+		char cwd[250];   				//	
 		char hostname[1024];			//
         getcwd(cwd,250);  				//	 
 		hostname[1023] = '\0';			//
 		gethostname(hostname, 1023);	//
-		
-		printf(getenv("USER"));
-		printf("@");
-		printf(hostname);
-		printf(" :: ");
-		printf(cwd);
+		printf(getenv("USER"));			// THIS IS THE PROMPT
+		printf("@");					//
+		printf(hostname);				//
+		printf(" :: ");					//
+		printf(cwd);					//
 		printf(">"); 					//
 
 
         int numI = 0;                // number of tokens in an instruction
 		
-        do {                            // loop reads character sequences separated by whitespace
+            do {                            // loop reads character sequences separated by whitespace
             scanf( "%s", token);
 			
 			int i;
@@ -66,13 +64,10 @@ char** parse() {
 			}
 		
         } while ('\n' != getchar());    //until end of line is reached
-		
-		//printTokens(bucket, numI);
-		
-      //until "exit" is read in
-	free(bucket);	//free dynamic memory
-
-    return bucket;
+	
+	//RETURN STRUCT
+	struct parseResult resultTokens = {bucket, numI};
+    return resultTokens;
 }
 
 //reallocates instruction array to hold another token,
