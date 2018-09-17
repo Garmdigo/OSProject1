@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include "parser_functions.h"
 
 parseResult parse() {
@@ -20,6 +21,11 @@ parseResult parse() {
 		printf(cwd);					//
 		printf(">"); 					//
 
+	//	printf("                      ");
+	//	chdir(getenv("HOME"));
+	//	getcwd(cwd,250);
+	//	printf(cwd);
+		
 
         int numI = 0;                // number of tokens in an instruction
 		
@@ -33,8 +39,14 @@ parseResult parse() {
 			
 			for (i = 0; i < strlen(token); i++)
 			{
+
 				if (token[i] == '|' || token[i] == '>' || token[i] == '<' || token[i] == '&') 
 				{
+
+
+					// I/O redirection___________________________________________________________________________
+				//	int fd = open(path);
+					
 					if (i-start > 0)
 					{
 						memcpy(temp, token + start, i - start);
@@ -62,7 +74,20 @@ parseResult parse() {
 				numI++;
 				
 			}
-		
+
+		//PATH RESOLUTIOn-----------------------------------------------------
+		//cd	
+			if(token[0] == 'c' && token[1] == 'd'){
+		 		chdir(getenv("HOME"));
+                                getcwd(cwd,250);
+                                printf("curent working directory: ");
+                                printf(cwd);
+                                printf("\n");
+                                           break;
+			}
+
+
+	
         } while ('\n' != getchar());    //until end of line is reached
 	
 	//RETURN STRUCT
