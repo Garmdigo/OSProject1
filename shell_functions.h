@@ -18,4 +18,9 @@ void printTokens(char** instr, int numTokens);
 //builtin functions
 void exitShell(struct timeval beginTime);
 
+//environement variables: returns string with value of environment variable
+//parameter string should be in the format: $VARIABLE
+char* environmentVariable(char* var);
+
+
 #endif

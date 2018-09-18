@@ -81,7 +81,7 @@ parseResult parse() {
 		 		chdir(getenv("HOME"));
                                 getcwd(cwd,250);
                                 printf("curent working directory: ");
-                                printf(cwd);
+                                printf("%s", cwd);
                                 printf("\n");
                                            break;
 			}

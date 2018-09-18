@@ -34,6 +34,12 @@ int main() {
         {
             exitShell(beginTime);
         }
+        
+        /* Environment variable testing
+        
+        printf("\n%s\n\n", environmentVariable(resultTokens.parseTokens[0]));
+
+        */
     }
     return 0;
 }
