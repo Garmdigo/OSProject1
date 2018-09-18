@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "parser_functions.h"
+#include "shell_functions.h"
 
 parseResult parse() {
     char token[256];      	// holds instruction token
@@ -14,11 +14,11 @@ parseResult parse() {
         getcwd(cwd,250);  				//	 
 		hostname[1023] = '\0';			//
 		gethostname(hostname, 1023);	//
-		printf(getenv("USER"));			// THIS IS THE PROMPT
+		printf("%s", getenv("USER"));			// THIS IS THE PROMPT
 		printf("@");					//
-		printf(hostname);				//
+		printf("%s",hostname);				//
 		printf(" :: ");					//
-		printf(cwd);					//
+		printf("%s", cwd);					//
 		printf(">"); 					//
 
 	//	printf("                      ");
@@ -45,7 +45,7 @@ parseResult parse() {
 
 
 					// I/O redirection___________________________________________________________________________
-				//	int fd = open(path);
+					//int fd = open(path);
 					
 					if (i-start > 0)
 					{

@@ -1,18 +1,22 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "parser_functions.h"
+#include <sys/time.h>
+#include "shell_functions.h"
 
 int main() {
+    //variable for calculating elapsed time using time.h
+    struct timeval beginTime;
+    
+    //Start timing shell session
+    gettimeofday(&beginTime, NULL);
+
     //initialize screen + token holder
     parseResult resultTokens;
     system("clear");
     
     while (1) {
         resultTokens = parse();
-
-        //This was just for testing
-        //printTokens(resultTokens.parseTokens, resultTokens.tokenAmount);
         
         /*
         
@@ -20,18 +24,16 @@ int main() {
         
         resultTokens.tokenAmount = The amount of tokens in the array,
         so use this is as the limit when traversing through the array 
-
-        e.g.
-
-        for (i = 0; i < tokenAmount; i++)
-        printf("%s", parseTokens[i]);
+        
         */
-        break;
 
-
-
-
-	
+        //Builtins
+        //exit
+        int isExit = strcmp(resultTokens.parseTokens[0], "exit");
+        if (isExit == 0)
+        {
+            exitShell(beginTime);
+        }
     }
     return 0;
 }
