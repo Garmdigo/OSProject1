@@ -4,20 +4,22 @@
 #include <sys/time.h>
 #include "shell_functions.h"
 
-int main() {
+int main()
+{
     //variable for calculating elapsed time using time.h
     struct timeval beginTime;
-    
+
     //Start timing shell session
     gettimeofday(&beginTime, NULL);
 
     //initialize screen + token holder
     parseResult resultTokens;
     system("clear");
-    
-    while (1) {
+
+    while (1)
+    {
         resultTokens = parse();
-        
+
         /*
         
         resultTokens.parseTokens = The returned array with all the tokens
@@ -25,6 +27,9 @@ int main() {
         resultTokens.tokenAmount = The amount of tokens in the array,
         so use this is as the limit when traversing through the array 
         
+        Environment variable testing:
+        printf("\n%s\n\n", environmentVariable(resultTokens.parseTokens[0]));
+
         */
 
         //Builtins
@@ -34,12 +39,13 @@ int main() {
         {
             exitShell(beginTime);
         }
-        
-        /* Environment variable testing
-        
-        printf("\n%s\n\n", environmentVariable(resultTokens.parseTokens[0]));
 
-        */
+        //echo
+        int isEcho = strcmp(resultTokens.parseTokens[0], "echo");
+        if (isEcho == 0)
+        {
+            echoShell(resultTokens.parseTokens, resultTokens.tokenAmount);
+        }
     }
     return 0;
 }

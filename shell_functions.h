@@ -17,6 +17,7 @@ void printTokens(char** instr, int numTokens);
 
 //builtin functions
 void exitShell(struct timeval beginTime);
+void echoShell(char** args, int argsNum);
 
 //environement variables: returns string with value of environment variable
 //parameter string should be in the format: $VARIABLE

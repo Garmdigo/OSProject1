@@ -7,13 +7,14 @@
 
 //environment variable: Returns string with value of environemnt variable
 //parameter string should be in the format: $VARIABLE (though lowercase is accepted)
-char* environmentVariable(char* var)
+char *environmentVariable(char *var)
 {
     char capsVar[strlen(var)];
     //starts loop at [1] to disregard '$' changes var to uppercase
-    for(int i = 1; i <= strlen(var); i++) {
+    for (int i = 1; i <= strlen(var); i++)
+    {
 
-        capsVar[i-1] = toupper(var[i]);
+        capsVar[i - 1] = toupper(var[i]);
     }
     //testing value of capsvar: printf("\n%s\n", capsVar);
     return getenv(capsVar);
@@ -32,9 +33,32 @@ void exitShell(struct timeval beginTime)
     gettimeofday(&endTime, NULL);
 
     //get elapsed time
-    elapsedTime = (endTime.tv_sec - startTime.tv_sec);      
+    elapsedTime = (endTime.tv_sec - startTime.tv_sec);
     printf("\n%s\n%s%0.1f%s\n", "Exiting...", "Elapsed time: ", elapsedTime, "s");
-    
+
     //exit
-    exit (0);
+    exit(0);
+}
+
+//echo: needs the char** of tokens, and the size of the char**
+void echoShell(char **args, int argsNum)
+{
+    int i;
+    //using char* to get the full token
+    char *test;
+
+    //loops through all provided tokens
+    for (int i = 1; i < argsNum; i++)
+    {
+        test = args[i];
+        if (test[0] == '$')
+        {
+            printf("%s ", environmentVariable(test));
+        }
+        else
+        {
+            printf("%s ", test);
+        }
+    }
+    printf("\n");
 }

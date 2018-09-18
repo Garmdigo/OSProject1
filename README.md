@@ -15,12 +15,19 @@ Done:
 
   - Part 2: Environment variables
 
-    - The function for returning an environment variable takes an input of a char* in the form '$VARIABLE' (though lower case is accepted). It removes the '$' and uses the getenv() function to return a char* string containing the value of the environment variable
+    - char* environmentVariable(char* var).
+    The function for returning an environment variable takes an input of a char* in the form '$VARIABLE' (though lower case is accepted). It removes the '$' and uses the getenv() function to return a char* string containing the value of the environment variable
 
   - Part 3: Prompt
+
+    - Integrated into the modified TA parser file. Uses getcwd(), gethost(), and getenv() to print out a prompt following the assignment format requirements
 
   - Part 9: Builtins
 
     - Exit
 
-      - Function is called from the main shell loop and takes in a timeval struct. Uses the supplied timeval struct and another generated on function call to calculate the run time of the shell and then exits with Exit(0).
+      - void exitShell(struct timeval beginTime). Function is called from the main shell loop and takes in a timeval struct. Uses the supplied timeval struct and another generated on function call to calculate the run time of the shell and then exits with Exit(0).
+    
+    - Echo
+
+      - void echoShell(char** args, int argsNum). Takes char** of tokens, and the size of the char**. Iterates through token list, check if each token is an environment variable. If the token is an environment variable, environmentVariable() is called and its value is printed. If the token is not an environment variable then no change is made and it is printed normally.
