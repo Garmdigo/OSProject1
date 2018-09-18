@@ -16,7 +16,7 @@ void exitShell(struct timeval beginTime)
     gettimeofday(&endTime, NULL);
 
     elapsedTime = (endTime.tv_sec - startTime.tv_sec);      // sec to ms
-    //elapsedTime += (t2.tv_usec - t1.tv_usec) / 1000.0;   // us to ms
-    printf("\n%s\n%s%f%s\n", "Exiting...", "Elapsed time: ", elapsedTime, "s");
+    //elapsedTime += (endTime.tv_usec - startTime.tv_usec) / 1000.0;   // us to ms
+    printf("\n%s\n%s%0.1f%s\n", "Exiting...", "Elapsed time: ", elapsedTime, "s");
     exit (0);
 }

@@ -14,11 +14,11 @@ parseResult parse() {
         getcwd(cwd,250);  				//	 
 		hostname[1023] = '\0';			//
 		gethostname(hostname, 1023);	//
-		printf("%s", getenv("USER"));			// THIS IS THE PROMPT
+		printf("%s", getenv("USER"));	// THIS IS THE PROMPT
 		printf("@");					//
-		printf("%s",hostname);				//
+		printf("%s",hostname);			//
 		printf(" :: ");					//
-		printf("%s", cwd);					//
+		printf("%s", cwd);				//
 		printf(">"); 					//
 
 	//	printf("                      ");
