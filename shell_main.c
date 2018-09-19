@@ -46,6 +46,10 @@ int main()
         {
             echoShell(resultTokens.parseTokens, resultTokens.tokenAmount);
         }
+
+	int cd = strcmp(resultTokens.parseTokens[0], "cd");
+	if (cd == 0)
+		printf("cd found.");
     }
     return 0;
 }
