@@ -37,12 +37,8 @@ parseResult parse()
 
 		for (i = 0; i < strlen(token); i++)
 		{
-
 			if (token[i] == '|' || token[i] == '>' || token[i] == '<' || token[i] == '&')
 			{
-
-				// I/O redirection___________________________________________________________________________
-				//int fd = open(path);
 
 				if (i - start > 0)
 				{
@@ -70,17 +66,6 @@ parseResult parse()
 			numI++;
 		}
 
-		//PATH RESOLUTIOn-----------------------------------------------------
-		//cd
-		if (token[0] == 'c' && token[1] == 'd')
-		{
-			chdir(getenv("HOME"));
-			getcwd(cwd, 250);
-			printf("curent working directory: ");
-			printf("%s", cwd);
-			printf("\n");
-			break;
-		}
 
 	} while ('\n' != getchar()); //until end of line is reached
 

@@ -22,6 +22,10 @@ Done:
 
     - Integrated into the modified TA parser file. Uses getcwd(), gethost(), and getenv() to print out a prompt following the assignment format requirements
 
+  - Part 5: Execution
+
+    - Shell can execute commands. When it is done with the given process, returns to shell.
+
   - Part 9: Builtins
 
     - Exit

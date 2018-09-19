@@ -18,7 +18,19 @@ int main()
 
     while (1)
     {
+
         resultTokens = parse();
+
+	//(5) execution_____________________________________________________________________
+
+		 execute(resultTokens.parseTokens);
+
+	//(6)I/O Redirection_______________________________________________________________
+	char* path = getenv("PATH");
+	int fd = open(path);
+	  close(fd);
+
+
 
         /*
         
@@ -32,7 +44,7 @@ int main()
 
         */
 
-        //Builtins
+        //Builtins_________________________________________________________________________
         //exit
         int isExit = strcmp(resultTokens.parseTokens[0], "exit");
         if (isExit == 0)

@@ -2,8 +2,28 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/time.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <ctype.h>
 #include "shell_functions.h"
+
+
+//execute
+void execute(char **command){
+
+   int status;
+   pid_t pid = fork();
+   if(pid==-1)
+      exit(1);
+   else if(pid==0){
+      execv(command[0],command);
+      exit(1);
+   }
+   else
+      waitpid(pid, &status, 0);
+
+}
 
 //environment variable: Returns string with value of environemnt variable
 //parameter string should be in the format: $VARIABLE (though lowercase is accepted)

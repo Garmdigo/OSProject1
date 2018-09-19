@@ -11,6 +11,9 @@ typedef struct parseResult {
     int tokenAmount;
 } parseResult;
 
+//execution
+void execute(char **cmd);
+
 parseResult parse();
 char** addToken(char** instr, char* tok, int numTokens);
 void printTokens(char** instr, int numTokens);
