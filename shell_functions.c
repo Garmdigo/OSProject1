@@ -112,22 +112,48 @@ char *environmentVariable(char *var)
     //testing value of capsvar: printf("\n%s\n", capsVar);
     return getenv(capsVar);
 }
-/*
-//path resolution: Three functions
-parseResult resolvePath(parseResult resultTokens)
+
+//path resolution: Four functions
+char* prefixCommand(char* command)
+{
+    int builtinCD = strcmp(command, "cd");
+    int builtinIO = strcmp(command, "io");
+    int builtinECHO = strcmp(command, "echo");
+    int builtinEXIT = strcmp(command, "exit");
+    
+    if (builtinCD != 0 && builtinIO != 0 && builtinECHO != 0 && builtinEXIT != 0)
+    {
+        char *prefix = "/bin/";
+        size_t length = strlen(command) + strlen(prefix) + 1;
+        char *exCommand = malloc(sizeof(char) * length);
+        strcpy(exCommand, prefix);
+        strcat(exCommand, command);
+        command = exCommand;
+    }
+
+return command;
+}
+/*parseResult resolvePath(parseResult resultTokens)
 {   
     parseResult resolvedTokens = resultTokens;
-
+    int commandType = isCommand(resultTokens);
+    
     //loops through all provided tokens
     for (int i = 0; i < resultTokens.tokenAmount; i++)
     {
-        isCommand(resultTokens.parseTokens[i]);
+        resultTokens.parseTokens[i] = expandPath(resultTokens.parseTokens[i], commandType);
     }
     return resolvedTokens;
 }
 
 //path resolution: Check for command type
-int isCommand(char* resultToken)
+int isCommand(parseResult resultTokens)
+{
+
+}
+
+//path resolution: Expand the path
+char* expandPath(char* path, int argType)
 {
 
 }

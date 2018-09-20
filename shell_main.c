@@ -20,9 +20,11 @@ int main()
     {
         //retrieve initial tokens
         resultTokens = parse();
-        //check if tokens contain path/env variables and resolve them
+        //check if tokens contain env variables and resolve them
         parseEnv(resultTokens);
-
+        //check if commands need to be expanded
+        resultTokens.parseTokens[0] = prefixCommand(resultTokens.parseTokens[0]);
+    
         //Builtins_________________________________________________________________________
         //exit
         int isExit = strcmp(resultTokens.parseTokens[0], "exit");

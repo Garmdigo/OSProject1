@@ -55,6 +55,8 @@ parseResult parseEnv(parseResult resultTokens);
 char* environmentVariable(char* var);
 
 //path resolution
+char* prefixCommand(char* command);
 parseResult resolvePath(parseResult resultTokens);
+
 
 #endif
