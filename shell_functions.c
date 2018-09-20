@@ -98,6 +98,11 @@ char *environmentVariable(char *var)
     return getenv(capsVar);
 }
 
+//path resolution
+parseResult resolvePath(parseResult resultTokens)
+{
+    
+}
 //built in functions
 //exit
 void exitShell(struct timeval beginTime)
@@ -139,4 +144,9 @@ void echoShell(char **args, int argsNum)
         }
     }
     printf("\n");
+}
+
+void cdShell(char* path)
+{
+    //it goes into here
 }
