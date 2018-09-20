@@ -1,11 +1,11 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <sys/time.h>
 #include "shell_functions.h"
 
 int main()
 {
+	// Initialize variables for traversing the background queue
+	next = 0;
+	imHigh = 0;
+	
     //variable for calculating elapsed time using time.h
     struct timeval beginTime;
 
@@ -23,14 +23,12 @@ int main()
 
 	//(5) execution_____________________________________________________________________
 
-		 execute(resultTokens.parseTokens);
+		execute(resultTokens.parseTokens);
 
 	//(6)I/O Redirection_______________________________________________________________
-	char* path = getenv("PATH");
-	int fd = open(path);
-	  close(fd);
-
-
+	//char* path = getenv("PATH");
+	//int fd = open(path);
+	//close(fd);
 
         /*
         
@@ -58,10 +56,21 @@ int main()
         {
             echoShell(resultTokens.parseTokens, resultTokens.tokenAmount);
         }
-
-	int cd = strcmp(resultTokens.parseTokens[0], "cd");
-	if (cd == 0)
-		printf("cd found.");
-    }
-    return 0;
+		
+		// CD
+		int cd = strcmp(resultTokens.parseTokens[0], "cd");
+		if (cd == 0)
+			printf("cd found.");
+		
+		//(7) Background Processing_________________________________________________________
+		int ready = waitpid(background[0].pid, NULL, WNOHANG);
+		/* TESTING
+		char** sendMe = copyToks(resultTokens.parseTokens, resultTokens.tokenAmount - 1);
+		int amount = resultTokens.tokenAmount - 1;
+		send2back(sendMe, background, amount, imHigh, next);
+		*/
+	}
+	
+    
+	return 0;
 }

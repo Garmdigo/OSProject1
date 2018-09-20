@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "shell_functions.h"
 
 parseResult parse()
@@ -21,7 +17,7 @@ parseResult parse()
 	printf("%s", hostname);		  //
 	printf(" :: ");				  //
 	printf("%s", cwd);			  //
-	printf(">");				  //
+	printf("> ");				  //
 	////////////////////////////////
 
 	int numI = 0; // number of tokens in an instruction
