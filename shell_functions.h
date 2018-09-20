@@ -51,9 +51,10 @@ void cdShell(char* path);
 
 //environement variables: returns string with value of environment variable
 //parameter string should be in the format: $VARIABLE
+parseResult parseEnv(parseResult resultTokens);
 char* environmentVariable(char* var);
 
 //path resolution
-parseResult resolvePath(parseResult resultTokens)
+parseResult resolvePath(parseResult resultTokens);
 
 #endif

@@ -15,8 +15,9 @@ Done:
 
   - Part 2: Environment variables
 
-    - char* environmentVariable(char* var).
-    The function for returning an environment variable takes an input of a char* in the form '$VARIABLE' (though lower case is accepted). It removes the '$' and uses the getenv() function to return a char* string containing the value of the environment variable
+    - parseResult parseEnv(parseResult resultTokens). Function takes a parseReult input and tests for environment variables. If an environment variable is found then the environmentVariable function is called to resolve it. The final resolved string is then returned to the main shell.
+    
+    - char* environmentVariable(char* var). The function for returning an environment variable takes an input of a char* in the form '$VARIABLE' (though lower case is accepted). It removes the '$' and uses the getenv() function to return a char* string containing the value of the environment variable
 
   - Part 3: Prompt
 

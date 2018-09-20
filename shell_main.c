@@ -18,9 +18,10 @@ int main()
 
     while (1)
     {
-
+        //retrieve initial tokens
         resultTokens = parse();
-        
+        //check if tokens contain path/env variables and resolve them
+        parseEnv(resultTokens);
 
         //Builtins_________________________________________________________________________
         //exit
