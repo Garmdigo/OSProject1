@@ -20,7 +20,7 @@ int main()
     {
 
         resultTokens = parse();
-
+        printTokens(resultTokens.parseTokens, resultTokens.tokenAmount);
 	//(5) execution_____________________________________________________________________
 
 		execute(resultTokens.parseTokens);
