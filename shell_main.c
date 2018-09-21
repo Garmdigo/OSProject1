@@ -25,7 +25,7 @@ int main()
         //check if commands need to be expanded
         resultTokens.parseTokens[0] = prefixCommand(resultTokens.parseTokens[0]);
  
-//	printTokens(resultTokens.parseTokens, resultTokens.tokenAmount);  
+	//printTokens(resultTokens.parseTokens, resultTokens.tokenAmount);  
  
         //Builtins_________________________________________________________________________
         //exit
@@ -68,7 +68,7 @@ int main()
         */
 
         //(5) execution_____________________________________________________________________
-        execute(resultTokens.parseTokens);
+        //execute(resultTokens.parseTokens);
 
         //(7) Background Processing_________________________________________________________
         int ready = waitpid(background[0].pid, NULL, WNOHANG);

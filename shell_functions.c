@@ -4,16 +4,6 @@
 void execute(char **command)
 {
 
-/*	char* temp = command[0];
-	char* temp2 = temp;
-	for(int i = 0; i < (strlen(temp)+5); i++){
-     	   temp2[i] = temp[i+5];
-	}
-
-	printf("temp2: ");
-	printf(temp2);
-	printf("\n");
-*/
 
     int status;
     pid_t pid = fork();
@@ -21,8 +11,8 @@ void execute(char **command)
         exit(1);
     else if (pid == 0)
     {
-       if( execv(command[0], command) == -1){
-         printf("excv failed\n");  
+       if( execv(command[0], NULL) == -1){
+         printf("excv failed: %s\n", command[0]);  
 	
 	}
 	exit(1);
@@ -119,30 +109,17 @@ parseResult parseIO(parseResult resultTokens){
 void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens){
    printf("> spec found!\n");
 
- 
-/*	char* truecmd = temp2;
-	for(int i = 0; i < (strlen(temp2)+5);i++){
-	   truecmd[i] = temp2[i+5];
-	} 
-
-	printf("temp2: ");
-	printf(temp2);
-*/
-
-
-//	int fd = open(temp3, O_RDWR | O_CREAT | O_TRUNC);
-
     if(fork() == 0){
 	//child
 	open(temp3, O_RDWR | O_CREAT | O_TRUNC);
 	close(1);
 	dup(3);
 	close(3);
-//	execute(resultTokens.parseTokens);
+	execute(resultTokens.parseTokens);
+	exit(1);
    }
    else{
-//	printf("In parent!\n");
-//	close(3);
+	close(3);
    }
    return resultTokens;
 }
@@ -218,10 +195,20 @@ char* prefixCommand(char* command)
     
     if (builtinCD != 0 && builtinIO != 0 && builtinECHO != 0 && builtinEXIT != 0)
     {
-        char *prefix = "/bin/";
+	//CODY---------------------------------------------------------------------------------
+		
+	char* prefix = getenv("PWD");	
+
+
+	//-----------------------------------------------------------------------------------------
+
+        //char *prefix = "/bin/";
         size_t length = strlen(command) + strlen(prefix) + 1;
         char *exCommand = malloc(sizeof(char) * length);
         strcpy(exCommand, prefix);
+
+		exCommand[(strlen(prefix))] = '/';
+
         strcat(exCommand, command);
         command = exCommand;
     }
