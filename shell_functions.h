@@ -47,7 +47,7 @@ int imHigh;
 //I/o
 parseResult parseIO(parseResult resultTokens);
 void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens);
-void inputRedirect(char* temp, char* temp3);
+void inputRedirect(char* temp, char* temp3, parseResult resultTokens);
 
 //builtin functions
 void exitShell(struct timeval beginTime);

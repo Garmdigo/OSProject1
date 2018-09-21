@@ -12,7 +12,7 @@ void execute(char **command)
     else if (pid == 0)
     {
        if( execv(command[0], NULL) == -1){
-         printf("excv failed: %s\n", command[0]);  
+        // printf("excv failed: %s\n", command[0]);  
 	
 	}
 	exit(1);
@@ -73,10 +73,16 @@ parseResult parseIO(parseResult resultTokens){
       temp = resultTokens.parseTokens[i];
       
       if(i==0){					//if redirection is first token, error
-	 if(temp[5] == '>' || temp[5] == '<'){
+	
+	if(strpbrk(resultTokens.parseTokens[0], "<") != NULL){
 	    printf("I/O Error\n");
 	    return resultTokens;
- 	 }
+	   
+	}
+	else if(strpbrk(resultTokens.parseTokens[0], ">") != NULL){
+	   printf("I/O Error\n");
+	   return resultTokens;
+        }
       }
 
       if(i == (resultTokens.tokenAmount) - 1){		//if redirection is last token, error
@@ -97,8 +103,8 @@ parseResult parseIO(parseResult resultTokens){
 	       outRedirect(temp, temp2, temp3, resultTokens);
 	    }
 	    else if(temp[k] == '<'){
-	        inputRedirect(temp,temp3);
 		temp3 = resultTokens.parseTokens[i+1];
+	        inputRedirect(temp,temp3,resultTokens);
 	    }
 	 }
       
@@ -107,7 +113,7 @@ parseResult parseIO(parseResult resultTokens){
 }
 
 void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens){
-   printf("> spec found!\n");
+   //printf("> spec found!\n");
 
     if(fork() == 0){
 	//child
@@ -124,12 +130,21 @@ void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens)
    return resultTokens;
 }
 
-void inputRedirect(char* temp, char* temp3){
-   printf("< spec found!\n");
+void inputRedirect(char* temp, char* temp3, parseResult resultTokens){
+   //printf("< spec found!\n");
 	
-
-
-
+   if(fork() == 0){
+      //child
+      open(temp3, O_RDONLY);
+      close(0);
+      dup(3);
+      close(3);
+      execute(resultTokens.parseTokens);
+      exit(1);
+   }
+   else
+      close(3);
+return resultTokens;
 }
 
 // Helper for send2back. Print start message.
