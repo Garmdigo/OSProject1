@@ -17,7 +17,7 @@ typedef struct parseResult {
 } parseResult;
 
 //execution
-void execute(char **cmd);
+void execute(char **command);
 
 parseResult parse();
 char** addToken(char** instr, char* tok, int numTokens);
@@ -43,6 +43,11 @@ Process background[10];
 // Used to traverse the background process array.
 int next;
 int imHigh;
+
+//I/o
+parseResult parseIO(parseResult resultTokens);
+void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens);
+void inputRedirect(char* temp, char* temp3);
 
 //builtin functions
 void exitShell(struct timeval beginTime);

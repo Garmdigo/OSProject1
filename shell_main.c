@@ -24,7 +24,9 @@ int main()
         parseEnv(resultTokens);
         //check if commands need to be expanded
         resultTokens.parseTokens[0] = prefixCommand(resultTokens.parseTokens[0]);
-    
+ 
+//	printTokens(resultTokens.parseTokens, resultTokens.tokenAmount);  
+ 
         //Builtins_________________________________________________________________________
         //exit
         int isExit = strcmp(resultTokens.parseTokens[0], "exit");
@@ -48,9 +50,10 @@ int main()
         }
 
         //(6)I/O Redirection_______________________________________________________________
-        //char* path = getenv("PATH");
-        //int fd = open(path);
-        //close(fd);
+
+	parseIO(resultTokens);	//check for <,> redirection
+
+
 
         /*
         

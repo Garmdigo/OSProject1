@@ -4,14 +4,28 @@
 void execute(char **command)
 {
 
+/*	char* temp = command[0];
+	char* temp2 = temp;
+	for(int i = 0; i < (strlen(temp)+5); i++){
+     	   temp2[i] = temp[i+5];
+	}
+
+	printf("temp2: ");
+	printf(temp2);
+	printf("\n");
+*/
+
     int status;
     pid_t pid = fork();
     if (pid == -1)
         exit(1);
     else if (pid == 0)
     {
-        execv(command[0], command);
-        exit(1);
+       if( execv(command[0], command) == -1){
+         printf("excv failed\n");  
+	
+	}
+	exit(1);
     }
     else
         waitpid(pid, &status, 0);
@@ -58,6 +72,87 @@ void send2back(char **someToks, Process queue[], int howMany, int thisHigh, int 
 
         return;
     }
+}
+
+parseResult parseIO(parseResult resultTokens){
+   for(int i = 0; i<resultTokens.tokenAmount;i++){
+      char *temp;
+      char *temp2;
+      char *temp3;
+
+      temp = resultTokens.parseTokens[i];
+      
+      if(i==0){					//if redirection is first token, error
+	 if(temp[5] == '>' || temp[5] == '<'){
+	    printf("I/O Error\n");
+	    return resultTokens;
+ 	 }
+      }
+
+      if(i == (resultTokens.tokenAmount) - 1){		//if redirection is last token, error
+         for(int j = 0; j < strlen(temp); j++){
+ 	    if(temp[j] == '<' || temp[j] == '>'){
+	       printf("I/O Error\n");
+	       return resultTokens;
+	    }
+ 	 }
+
+      }
+
+
+         for(int k = 0; k < strlen(temp);k++){
+	    if(temp[k] == '>'){			//checks for redirection token
+	       temp2 = resultTokens.parseTokens[i-1];
+	       temp3 = resultTokens.parseTokens[i+1];
+	       outRedirect(temp, temp2, temp3, resultTokens);
+	    }
+	    else if(temp[k] == '<'){
+	        inputRedirect(temp,temp3);
+		temp3 = resultTokens.parseTokens[i+1];
+	    }
+	 }
+      
+   }
+   return resultTokens;
+}
+
+void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens){
+   printf("> spec found!\n");
+
+ 
+/*	char* truecmd = temp2;
+	for(int i = 0; i < (strlen(temp2)+5);i++){
+	   truecmd[i] = temp2[i+5];
+	} 
+
+	printf("temp2: ");
+	printf(temp2);
+*/
+
+
+//	int fd = open(temp3, O_RDWR | O_CREAT | O_TRUNC);
+
+    if(fork() == 0){
+	//child
+	open(temp3, O_RDWR | O_CREAT | O_TRUNC);
+	close(1);
+	dup(3);
+	close(3);
+//	execute(resultTokens.parseTokens);
+   }
+   else{
+//	printf("In parent!\n");
+//	close(3);
+   }
+   return resultTokens;
+}
+
+void inputRedirect(char* temp, char* temp3){
+   printf("< spec found!\n");
+	
+
+
+
 }
 
 // Helper for send2back. Print start message.
