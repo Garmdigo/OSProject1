@@ -33,21 +33,25 @@ typedef struct Process
 } Process;
 
 // Background process functions.
-void send2back(char** someToks, Process queue[], int howMany, int thisHigh, int index);
-char** copyToks(char** instr, int numToks);
+void send2back(char** someToks, Process* queue, int howMany, int thisHigh, int index);
 void start(int queNum, pid_t pid);
+void finish(Process* queue, int next);
+char** copyToks(char** instr, int numToks);
 
 // Initialize background process array.
-Process background[10];
-
+// Process** queue;
+Process* queue;
 // Used to traverse the background process array.
-int next;
-int imHigh;
+int next, capacity, imHigh;
 
 //I/o
 parseResult parseIO(parseResult resultTokens);
 void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens);
 void inputRedirect(char* temp, char* temp3, parseResult resultTokens);
+
+//pipes
+parseResult parePipe(parseResult resultTokens);
+void ourPipe(char* temp, char* temp2, parseResult resultTokens);
 
 //builtin functions
 void exitShell(struct timeval beginTime);
@@ -62,6 +66,5 @@ char* environmentVariable(char* var);
 //path resolution
 char* prefixCommand(char* command);
 parseResult resolvePath(parseResult resultTokens);
-
 
 #endif
