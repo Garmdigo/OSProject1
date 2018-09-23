@@ -150,9 +150,7 @@ void inputRedirect(char* temp, char* temp3, parseResult resultTokens){
    else
       close(3);
 return;
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 }
 
 parseResult parsePipe(parseResult resultTokens){
@@ -218,10 +216,7 @@ void ourPipe(char* temp, char* temp2, parseResult resultTokens){
    }
    else
       close(fd);
-=======
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
-=======
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
+
 }
 
 // Helper for send2back. Print start message.

@@ -54,31 +54,10 @@ int main()
 
         //(6)I/O Redirection_______________________________________________________________
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
 	parseIO(resultTokens);	//check for <,> redirection
 	parsePipe(resultTokens); 	//check for pipes
-=======
-=======
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
-=======
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
-		parseIO(resultTokens);	//check for <,> redirection
 
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
-=======
-		parseIO(resultTokens);	//check for <,> redirection
 
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
-
-=======
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
-=======
->>>>>>> 381ea52cfed847a2c4cdacd097fb1f22ae3e25d1
         //(5) execution_____________________________________________________________________
         
 		//if(resultTokens.tokenAmount == 1)
