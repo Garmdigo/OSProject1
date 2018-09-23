@@ -27,10 +27,6 @@ void send2back(char **someToks, Process queue[], int howMany, int thisHigh, int 
     // Create  a new child process.
     pid_t aPid = fork();
 
-    // Store the full pathname of the command in com.
-    char prefix[] = "/bin/";
-    char *com = strcat(prefix, someToks[0]);
-
     if (aPid == -1)
     {
         // Error, fork() failed. Exit the program.
@@ -41,8 +37,8 @@ void send2back(char **someToks, Process queue[], int howMany, int thisHigh, int 
         // Child
 
         // Execute the command.
-        execv(com, someToks);
-
+        execv(someToks[0], someToks);
+		
         // Execv failed. Notify the user and exit.
         printf("Problem executing.\n");
         exit(1);
@@ -55,7 +51,7 @@ void send2back(char **someToks, Process queue[], int howMany, int thisHigh, int 
         queue[index].theToks = someToks;
         queue[index].numToks = howMany;
         queue[index].pid = aPid;
-        queue[index].spot = thisHigh + 1;
+        queue[index].spot = thisHigh;
 
         // Print out start message.
         start(queue[index].spot, queue[index].pid);
@@ -64,52 +60,61 @@ void send2back(char **someToks, Process queue[], int howMany, int thisHigh, int 
     }
 }
 
-parseResult parseIO(parseResult resultTokens){
-   for(int i = 0; i<resultTokens.tokenAmount;i++){
-      char *temp;
-      char *temp2;
-      char *temp3;
+parseResult parseIO(parseResult resultTokens)
+{
+	for(int i = 0; i<resultTokens.tokenAmount;i++)
+	{
+		char *temp;
+		char *temp2;
+		char *temp3;
 
-      temp = resultTokens.parseTokens[i];
-      
-      if(i==0){					//if redirection is first token, error
-	
-	if(strpbrk(resultTokens.parseTokens[0], "<") != NULL){
-	    printf("I/O Error\n");
-	    return resultTokens;
-	   
+		temp = resultTokens.parseTokens[i];
+		
+		//if redirection is first token, error
+		if(i==0)
+		{					
+			if(strpbrk(resultTokens.parseTokens[0], "<") != NULL)
+			{
+				printf("I/O Error\n");
+				return resultTokens;
+			}
+			else if(strpbrk(resultTokens.parseTokens[0], ">") != NULL)
+			{
+				printf("I/O Error\n");
+				return resultTokens;
+			}
+		}
+
+		//if redirection is last token, error
+		if(i == (resultTokens.tokenAmount) - 1)
+		{		
+			for(int j = 0; j < strlen(temp); j++)
+			{
+				if(temp[j] == '<' || temp[j] == '>')
+				{
+					printf("I/O Error\n");
+					return resultTokens;
+				}
+			}
+		}
+
+        for(int k = 0; k < strlen(temp);k++)
+		{
+			//checks for redirection token
+			if(temp[k] == '>')
+			{			
+				temp2 = resultTokens.parseTokens[i-1];
+				temp3 = resultTokens.parseTokens[i+1];
+				outRedirect(temp, temp2, temp3, resultTokens);
+			}
+			else if(temp[k] == '<')
+			{
+				temp3 = resultTokens.parseTokens[i+1];
+				inputRedirect(temp,temp3,resultTokens);
+			}
+		}
 	}
-	else if(strpbrk(resultTokens.parseTokens[0], ">") != NULL){
-	   printf("I/O Error\n");
-	   return resultTokens;
-        }
-      }
-
-      if(i == (resultTokens.tokenAmount) - 1){		//if redirection is last token, error
-         for(int j = 0; j < strlen(temp); j++){
- 	    if(temp[j] == '<' || temp[j] == '>'){
-	       printf("I/O Error\n");
-	       return resultTokens;
-	    }
- 	 }
-
-      }
-
-
-         for(int k = 0; k < strlen(temp);k++){
-	    if(temp[k] == '>'){			//checks for redirection token
-	       temp2 = resultTokens.parseTokens[i-1];
-	       temp3 = resultTokens.parseTokens[i+1];
-	       outRedirect(temp, temp2, temp3, resultTokens);
-	    }
-	    else if(temp[k] == '<'){
-		temp3 = resultTokens.parseTokens[i+1];
-	        inputRedirect(temp,temp3,resultTokens);
-	    }
-	 }
-      
-   }
-   return resultTokens;
+	return resultTokens;
 }
 
 void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens){
@@ -127,7 +132,7 @@ void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens)
    else{
 	close(3);
    }
-   return resultTokens;
+   return;
 }
 
 void inputRedirect(char* temp, char* temp3, parseResult resultTokens){
@@ -144,13 +149,41 @@ void inputRedirect(char* temp, char* temp3, parseResult resultTokens){
    }
    else
       close(3);
-return resultTokens;
+return;
 }
 
 // Helper for send2back. Print start message.
 void start(int queNum, pid_t pid)
 {
     printf("[%d]\t[%d]\n", queNum, pid);
+}
+
+// Removes background process from the queue and prints completion message.
+void finish(Process* queue, int next)
+{
+	// Store the comand with the /bin/ prefix in cmd.
+	char* cmd = (char*)malloc((strlen(queue[0].theToks[0])-4) * sizeof(char));
+	strcpy(cmd, &queue[0].theToks[0][5]);
+	
+	// Print out the queue number.
+	printf("[%d]+\tDone\t[", queue[0].spot);
+	// Print out the command.
+	printf("%s ", cmd);
+	// Print out the arguments.
+	for(int i = 1; i < queue[0].numToks - 1; i++)
+	{
+		printf("%s ", queue[0].theToks[i]);
+	}
+	printf("%s]\n", queue[0].theToks[queue[0].numToks-1]);
+	 
+	//Remove the process from the queue and move up the other processes.
+	for(int i = 0; i < (next-1); i++)
+	{
+		queue[i].theToks = queue[i+1].theToks;
+        queue[i].numToks = queue[i+1].numToks;
+        queue[i].pid = queue[i+1].pid;
+        queue[i].spot = queue[i+1].spot;
+	}
 }
 
 // Helper for send2back. Returns an exact copy of the instr array.
@@ -212,17 +245,17 @@ char* prefixCommand(char* command)
     {
 	//CODY---------------------------------------------------------------------------------
 		
-	char* prefix = getenv("PWD");	
+		// char* prefix = getenv("PWD");	
 
 
 	//-----------------------------------------------------------------------------------------
 
-        //char *prefix = "/bin/";
+        char *prefix = "/bin/";
         size_t length = strlen(command) + strlen(prefix) + 1;
         char *exCommand = malloc(sizeof(char) * length);
         strcpy(exCommand, prefix);
 
-		exCommand[(strlen(prefix))] = '/';
+		// exCommand[(strlen(prefix))] = '/';
 
         strcat(exCommand, command);
         command = exCommand;
