@@ -49,7 +49,7 @@ int main()
         int cd = strcmp(resultTokens.parseTokens[0], "cd");
         if (cd == 0)
         {
-            //cdShell();
+            resultTokens.parseTokens[1] = resolvePath(resultTokens.parseTokens[1]);
         }
 
         //(6)I/O Redirection_______________________________________________________________

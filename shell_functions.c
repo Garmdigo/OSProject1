@@ -330,31 +330,100 @@ char* prefixCommand(char* command)
 
 return command;
 }
-/*parseResult resolvePath(parseResult resultTokens)
-{   
-    parseResult resolvedTokens = resultTokens;
-    int commandType = isCommand(resultTokens);
-    
-    //loops through all provided tokens
-    for (int i = 0; i < resultTokens.tokenAmount; i++)
+char *resolvePath(char *pathToResolve)
+{
+    char *prefix;
+    char *command = pathToResolve;
+    char *exCommand;
+    size_t length;
+
+    //DIRNAME
+    //int dirCheck = strcmp(command[0], "/");
+    if (command[0] != '/' && command[0] != '.' && command[0] != '~')
     {
-        resultTokens.parseTokens[i] = expandPath(resultTokens.parseTokens[i], commandType);
+        prefix = getenv("HOME");
+
+        length = strlen(command) + strlen(prefix) + 1;
+        exCommand = malloc(sizeof(char) * length);
+        strcpy(exCommand, prefix);
+
+        exCommand[(strlen(prefix))] = '/';
+
+        strcat(exCommand, command);
+        command = exCommand;
     }
-    return resolvedTokens;
+
+    if (command[0] == '~')
+    {
+        prefix = getenv("HOME");
+
+        length = strlen(command) + strlen(prefix) + 1;
+        exCommand = malloc(sizeof(char) * length);
+        //char* temp = malloc(sizeof(char) * strlen(command));
+        
+        command++;
+        strcpy(exCommand, prefix);
+
+        exCommand[(strlen(prefix))] = '/';
+
+        strcat(exCommand, command);
+        command = exCommand; 
+    }
+
+    if (command[0] == '.' && command[1] != '.')
+    {
+        prefix = getenv("HOME");
+
+        length = strlen(command) + strlen(prefix) + 1;
+        exCommand = malloc(sizeof(char) * length);
+        command++;
+        command++;
+        strcpy(exCommand, prefix);
+
+        exCommand[(strlen(prefix))] = '/';
+
+        strcat(exCommand, command);
+        command = exCommand;
+    }
+
+    if (command[0] == '.' && command[1] == '.' && command[2] == '/')
+    {
+        //reverse string
+        prefix = getenv("PWD");
+        strrev(prefix);
+        //delete up to previous directory using pointer++
+        char i;
+        int count = 0;
+        while (1)
+        {
+            if (prefix[0] == '/')
+            {
+                prefix++;
+                break;
+            }
+            else {
+                prefix++;
+                count++;
+            }
+        } 
+        //moving command
+        command++;
+        command++;
+        command++;
+
+        strrev(prefix);
+        length = strlen(command) + strlen(prefix) + 1;
+        exCommand = malloc(sizeof(char) * length);
+        strcpy(exCommand, prefix);
+
+        exCommand[(strlen(prefix))] = '/';
+
+        strcat(exCommand, command);
+        command = exCommand;
+    }
+
+    return command;
 }
-
-//path resolution: Check for command type
-int isCommand(parseResult resultTokens)
-{
-
-}
-
-//path resolution: Expand the path
-char* expandPath(char* path, int argType)
-{
-
-}
-*/
 //built in functions
 //exit
 void exitShell(struct timeval beginTime)
@@ -401,4 +470,19 @@ void echoShell(char **args, int argsNum)
 void cdShell(char *path)
 {
     //it goes into here
+}
+
+char *strrev(char *str)
+{
+      char *p1, *p2;
+
+      if (! str || ! *str)
+            return str;
+      for (p1 = str, p2 = str + strlen(str) - 1; p2 > p1; ++p1, --p2)
+      {
+            *p1 ^= *p2;
+            *p2 ^= *p1;
+            *p1 ^= *p2;
+      }
+      return str;
 }

@@ -65,6 +65,7 @@ char* environmentVariable(char* var);
 
 //path resolution
 char* prefixCommand(char* command);
-parseResult resolvePath(parseResult resultTokens);
+char* resolvePath(char* pathToResolve);
+char *strrev(char *str); //implementation from S/O
 
 #endif
