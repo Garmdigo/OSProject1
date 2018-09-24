@@ -35,11 +35,6 @@ Known Bugs:
 - cd without any arguments segfaults
 
 
-
-- General:
-
-  - Main shell loop
-
 - Specific Parts:
 
   - Part 1: Parsing
