@@ -107,7 +107,11 @@ int main()
 		}
 		else if(isAmp != 0)
 		{
-			char** sendMe = copyToks(resultTokens.parseTokens, resultTokens.tokenAmount - 1);
+			char** sendMe = mkAmends(resultTokens.parseTokens, resultTokens.tokenAmount, isAmp);
+			if(sendMe == NULL)
+			{
+				continue;
+			}
 			int amount = resultTokens.tokenAmount - 1;
 			send2back(sendMe, queue, amount, imHigh, next);
 			next++;

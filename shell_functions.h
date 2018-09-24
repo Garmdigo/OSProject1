@@ -38,7 +38,8 @@ typedef struct Process
 void send2back(char** someToks, Process* queue, int howMany, int thisHigh, int index);
 void start(int queNum, pid_t pid);
 void finish(Process* queue, int next);
-char** copyToks(char** instr, int numToks);
+char** cleanToks(char **instr, int numToks, int where);
+char** mkAmends(char** instr, int numToks, int numAmps);
 
 // Initialize background process array.
 Process* queue;

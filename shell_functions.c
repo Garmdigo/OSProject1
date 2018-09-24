@@ -238,20 +238,28 @@ void start(int queNum, pid_t pid)
 // Removes background process from the queue and prints completion message.
 void finish(Process* queue, int next)
 {
-	// Store the comand with the /bin/ prefix in cmd.
+	// Store the comand without the /bin/ prefix in cmd.
 	char* cmd = (char*)malloc((strlen(queue[0].theToks[0])-4) * sizeof(char));
 	strcpy(cmd, &queue[0].theToks[0][5]);
 	
-	// Print out the queue number.
-	printf("[%d]+\t[", queue[0].spot);
-	// Print out the command.
-	printf("%s ", cmd);
-	// Print out the arguments.
-	for(int i = 1; i < queue[0].numToks - 1; i++)
+	
+	if(queue[0].numToks == 1)
 	{
-		printf("%s ", queue[0].theToks[i]);
+		printf("[%d]+\t[%s]\n", queue[0].spot, cmd);
 	}
-	printf("%s]\n", queue[0].theToks[queue[0].numToks-1]);
+	else
+	{
+		// Print out the queue number.
+		printf("[%d]+\t[", queue[0].spot);
+		// Print out the command.
+		printf("%s ", cmd);
+		// Print out the arguments.
+		for(int i = 1; i < queue[0].numToks - 1; i++)
+		{
+			printf("%s ", queue[0].theToks[i]);
+		}
+		printf("%s]\n", queue[0].theToks[queue[0].numToks-1]);
+	}
 	 
 	//Remove the process from the queue and move up the other processes.
 	for(int i = 0; i < (next-1); i++)
@@ -263,19 +271,77 @@ void finish(Process* queue, int next)
 	}
 }
 
-// Helper for send2back. Returns an exact copy of the instr array.
-char **copyToks(char **instr, int numToks)
+// Returns an exact copy of the instr array without either the first token, the last token or both.
+char **cleanToks(char **instr, int numToks, int where)
 {
     char **new_arr = (char **)malloc((numToks) * sizeof(char *));
 
-    //copy values into new array
-    for (int i = 0; i < numToks; i++)
-    {
-        new_arr[i] = (char *)malloc((strlen(instr[i]) + 1) * sizeof(char));
-        strcpy(new_arr[i], instr[i]);
-    }
+	if(where == -1)
+	{
+		// Copy everything but the first token or everything but the first and last token.
+		for (int i = 0; i < numToks; i++)
+		{
+			new_arr[i] = (char *)malloc((strlen(instr[i+1]) + 1) * sizeof(char));
+			strcpy(new_arr[i], instr[i+1]);
+		}		
+	}
+	else if(where == 1)
+	{
+		// Copy everything but the last token.
+		for (int i = 0; i < numToks; i++)
+		{
+			new_arr[i] = (char *)malloc((strlen(instr[i]) + 1) * sizeof(char));
+			strcpy(new_arr[i], instr[i]);
+		}
+	}
 
     return new_arr;
+}
+
+char** mkAmends(char** instr, int numToks, int numAmps)
+{
+	char** sendIt;
+	
+	if(numAmps > 2)
+	{
+		printf("Syntax error.\n");
+		return NULL;
+	}
+	else if(numAmps == 1)
+	{
+		if(strcmp(instr[0], "&") == 0)
+		{
+			sendIt = cleanToks(instr, numToks-1, -1);
+			execute(sendIt);
+			return NULL;
+		}
+		else if(strcmp(instr[numToks-1], "&") == 0)
+		{
+			sendIt = cleanToks(instr, numToks-1, 1);
+			return sendIt;
+		}
+		else
+		{
+			printf("Syntax error.\n");
+			return NULL;
+		}
+	}
+	else if(numAmps == 2)
+	{
+		if(strcmp(instr[0], "&") == 0 && strcmp(instr[numToks-1], "&") == 0)
+		{
+			sendIt = cleanToks(instr, numToks-2, -1);
+			return sendIt;
+		}
+		else
+		{
+			printf("Syntax error.\n");
+			return NULL;
+		}
+	}
+	
+	printf("Syntax error.\n");
+	return NULL;
 }
 
 //environment variables
@@ -320,17 +386,17 @@ char* prefixCommand(char* command)
     {
 	//CODY---------------------------------------------------------------------------------
 		
-		 char* prefix = getenv("PWD");	
+		 //char* prefix = getenv("PWD");	
 
 
 	//-----------------------------------------------------------------------------------------
 
-//        char *prefix = "/bin/";
+		char* prefix = "/bin/";
         size_t length = strlen(command) + strlen(prefix) + 1;
         char *exCommand = malloc(sizeof(char) * length);
         strcpy(exCommand, prefix);
 
-		 exCommand[(strlen(prefix))] = '/';
+		// exCommand[(strlen(prefix))] = '/';
 
         strcat(exCommand, command);
         command = exCommand;
