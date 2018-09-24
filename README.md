@@ -1,6 +1,30 @@
 # OSProject1
 COP4610 Project 1 Repository
 
+member 1: Cody O'Connor
+member 2: Christian Watkins
+member 3:John Beckmann
+
+p1-ccj.tar contents:
+   README
+   makefile
+   parser_help.c
+   parser_main.c
+   shell_functions.c
+   shell_functions.h
+   shell_main.c
+
+Completed using linprog
+
+to build
+$> make
+
+To clean
+$>make clean
+
+
+
+
 Done: 
 
 - General:
