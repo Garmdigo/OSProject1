@@ -1,7 +1,38 @@
 # OSProject1
 COP4610 Project 1 Repository
 
-Done: 
+
+Completed using linprog
+
+
+Member 1: Cody O'Connor 
+
+Member 2: Christian Watkins Parts 1,2,3,4,9
+
+Member 3: John Beckmann
+
+p1-ccj.tar contents:
+- README
+- makefile
+- parser_help.c
+- parser_main.c
+- shell_functions.c
+- shell_functions.h
+- shell_main.c
+
+
+To build:
+
+$> make
+
+
+To clean:
+
+$> make clean
+
+Known Bugs:
+- cd without any arguments segfaults
+
 
 - General:
 
@@ -47,4 +78,3 @@ Done:
 
       - char *resolvePath(char *pathToResolve). Takes a char * path and will attempt to resolve it to an absolute path.
 
-      
