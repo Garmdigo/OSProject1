@@ -53,6 +53,7 @@ Completed using linprog
   - Part 4: Path resolution
 
     - char* prefixCommand(char* command). Every input parsed has its first token sent to this function. If the command in the first token is not builtin then it has /bin/ attached to its front.
+    - resolvePath function - works with prefix command to resolve the path.
 
   - Part 5: Execution
 
@@ -78,3 +79,4 @@ Completed using linprog
 
       - int isDirectory(char* path). Uses stat to gather data and then the S_ISDIR macro to determine if the directory is a directory
 
+     - No Io command***
