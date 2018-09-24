@@ -341,7 +341,7 @@ char *resolvePath(char *pathToResolve)
     //int dirCheck = strcmp(command[0], "/");
     if (command[0] != '/' && command[0] != '.' && command[0] != '~')
     {
-        prefix = getenv("HOME");
+        prefix = getenv("PWD");
 
         length = strlen(command) + strlen(prefix) + 1;
         exCommand = malloc(sizeof(char) * length);
@@ -469,7 +469,15 @@ void echoShell(char **args, int argsNum)
 
 void cdShell(char *path)
 {
-    //it goes into here
+    char directory[255];
+
+    printf("%s\n", path);
+    path = resolvePath(path);
+     printf("%s\n", path);
+    
+    if(chdir(path) != 0) {
+        printf("Error: %s does not exist!\n", directory);}
+
 }
 
 char *strrev(char *str)

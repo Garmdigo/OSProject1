@@ -49,9 +49,19 @@ int main()
         int cd = strcmp(resultTokens.parseTokens[0], "cd");
         if (cd == 0)
         {
-            resultTokens.parseTokens[1] = resolvePath(resultTokens.parseTokens[1]);
+            
+            if (resultTokens.tokenAmount > 2)
+            {
+                printf("Error: Too many arguments\n");
+            }
+            else if (resultTokens.tokenAmount == 0)
+            {
+                //cdShell(getenv("HOME"));
+            }
+            else {
+                cdShell(resultTokens.parseTokens[1]);
+            }
         }
-
         //(6)I/O Redirection_______________________________________________________________
 
 	parseIO(resultTokens);	//check for <,> redirection
