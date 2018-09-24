@@ -39,31 +39,32 @@ void finish(Process* queue, int next);
 char** copyToks(char** instr, int numToks);
 
 // Initialize background process array.
-// Process** queue;
 Process* queue;
 // Used to traverse the background process array.
-int next, capacity, imHigh;
+int next, capacity, imHigh, ready;
+// Counters for the special characters in a command.
+int isAmp, isDire, isPipe, isExit, isEcho, isCd, isIo;
 
-//I/o
+// I/O
 parseResult parseIO(parseResult resultTokens);
 void outRedirect(char* temp, char* temp2, char* temp3, parseResult resultTokens);
 void inputRedirect(char* temp, char* temp3, parseResult resultTokens);
 
-//pipes
-parseResult parePipe(parseResult resultTokens);
+// Pipes
+parseResult parsePipe(parseResult resultTokens);
 void ourPipe(char* temp, char* temp2, parseResult resultTokens);
 
-//builtin functions
+// Builtin functions
 void exitShell(struct timeval beginTime);
 void echoShell(char** args, int argsNum);
 void cdShell(char* path);
 
-//environement variables: returns string with value of environment variable
-//parameter string should be in the format: $VARIABLE
+// Environement variables: returns string with value of environment variable
+// Parameter string should be in the format: $VARIABLE
 parseResult parseEnv(parseResult resultTokens);
 char* environmentVariable(char* var);
 
-//path resolution
+// Path resolution
 char* prefixCommand(char* command);
 parseResult resolvePath(parseResult resultTokens);
 
