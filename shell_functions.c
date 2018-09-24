@@ -386,17 +386,29 @@ char* prefixCommand(char* command)
     {
 	//CODY---------------------------------------------------------------------------------
 		
+<<<<<<< HEAD
 		 //char* prefix = getenv("PWD");	
+=======
+//		 char* prefix = getenv("PWD");	
+>>>>>>> ac2ad7d13b062e6533b6aca95e876b34678a7c37
 
 
 	//-----------------------------------------------------------------------------------------
 
+<<<<<<< HEAD
 		char* prefix = "/bin/";
+=======
+        char *prefix = "/bin/";
+>>>>>>> ac2ad7d13b062e6533b6aca95e876b34678a7c37
         size_t length = strlen(command) + strlen(prefix) + 1;
         char *exCommand = malloc(sizeof(char) * length);
         strcpy(exCommand, prefix);
 
+<<<<<<< HEAD
 		// exCommand[(strlen(prefix))] = '/';
+=======
+//		 exCommand[(strlen(prefix))] = '/';
+>>>>>>> ac2ad7d13b062e6533b6aca95e876b34678a7c37
 
         strcat(exCommand, command);
         command = exCommand;
@@ -411,9 +423,15 @@ char *resolvePath(char *pathToResolve)
     char *exCommand;
     size_t length;
 
+    int builtinCD = strcmp(command, "cd");
+    int builtinIO = strcmp(command, "io");
+    int builtinECHO = strcmp(command, "echo");
+    int builtinEXIT = strcmp(command, "exit");
+
+
     //DIRNAME
     //int dirCheck = strcmp(command[0], "/");
-    if (command[0] != '/' && command[0] != '.' && command[0] != '~')
+    if (command[0] != '/' && command[0] != '.' && command[0] != '~' && builtinCD != 0 && builtinIO !=0 &&builtinECHO !=0 && builtinEXIT != 0)
     {
         prefix = getenv("PWD");
 
@@ -495,6 +513,8 @@ char *resolvePath(char *pathToResolve)
         strcat(exCommand, command);
         command = exCommand;
     }
+    else
+ 	prefixCommand(command);
 
     return command;
 }

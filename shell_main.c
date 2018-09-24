@@ -26,8 +26,10 @@ int main()
         //check if tokens contain env variables and resolve them
         parseEnv(resultTokens);
         //check if commands need to be expanded
-        resultTokens.parseTokens[0] = prefixCommand(resultTokens.parseTokens[0]);
+        resultTokens.parseTokens[0] = resolvePath(resultTokens.parseTokens[0]);
  
+	//printTokens(resultTokens.parseTokens,resultTokens.tokenAmount);
+
 		isAmp = 0;
 		isDire = 0;
 		isPipe = 0;
