@@ -5,7 +5,8 @@ Member 1: Cody O'Connor
 
 Member 2: Christian Watkins Parts 1,2,3,4,9
 
-Member 3: John Beckmann
+Member 3: John Beckmann, Background processes and main Shell loop
+
 
 
 p1-ccj.tar contents:
@@ -29,7 +30,8 @@ $> make clean
 
 Known Bugs:
 - cd without any arguments segfaults
-
+- For background processes it can't handle ampersands that come in the beginning of the instruction and seg faults.
+- Background processes can't handle all commands because path resolution doesn't search through $PATH. Does handle /bin/ instructions.
 
 Completed using linprog
 
