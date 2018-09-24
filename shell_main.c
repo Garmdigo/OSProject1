@@ -28,26 +28,65 @@ int main()
         //check if commands need to be expanded
         resultTokens.parseTokens[0] = prefixCommand(resultTokens.parseTokens[0]);
  
-//	printTokens(resultTokens.parseTokens, resultTokens.tokenAmount);  
- 
-        //Builtins_________________________________________________________________________
-        //exit
-        int isExit = strcmp(resultTokens.parseTokens[0], "exit");
-        if (isExit == 0)
+		isAmp = 0;
+		isDire = 0;
+		isPipe = 0;
+		isEcho = 0;
+		isExit = 0;
+		isCd = 0;
+		isIo = 0;
+		
+		// Count the special characters.
+		for(int i = 0; i < resultTokens.tokenAmount; i++)
+		{
+			if(strcmp(resultTokens.parseTokens[i], "&") == 0)
+				isAmp++;
+			else if(strcmp(resultTokens.parseTokens[i], "<") == 0 || strcmp(resultTokens.parseTokens[i], ">") == 0)
+				isDire++;
+			else if(strcmp(resultTokens.parseTokens[i], "|") == 0)
+				isPipe++;
+			else if(strcmp(resultTokens.parseTokens[0], "exit") == 0)
+			{
+				isExit = 1;
+				break;
+			}
+			else if(strcmp(resultTokens.parseTokens[0], "echo") == 0)
+			{
+				isEcho = 1;
+				break;
+			}
+			else if(strcmp(resultTokens.parseTokens[0], "cd") == 0)
+			{
+				isCd = 1;
+				break;
+			}
+			else if(strcmp(resultTokens.parseTokens[0], "io") == 0)
+			{
+				isIo = 1;
+				break;
+			}
+			else
+				continue;
+		}
+		
+        if(isExit == 1)
         {
+			// Make sure all of the background processes have terminated.
+			while(next != 0)
+			{
+				// There are still processes in the queue.
+				// Wait for the processes to finish executing.
+				waitpid(queue[0].pid, NULL, 0);
+				finish(queue, next);
+				next--;
+			}
             exitShell(beginTime);
         }
-
-        //echo
-        int isEcho = strcmp(resultTokens.parseTokens[0], "echo");
-        if (isEcho == 0)
+        else if(isEcho == 1)
         {
             echoShell(resultTokens.parseTokens, resultTokens.tokenAmount);
         }
-
-        // CD
-        int cd = strcmp(resultTokens.parseTokens[0], "cd");
-        if (cd == 0)
+        else if(isCd == 1)
         {
             
             if (resultTokens.tokenAmount > 2)
@@ -62,30 +101,36 @@ int main()
                 cdShell(resultTokens.parseTokens[1]);
             }
         }
-        //(6)I/O Redirection_______________________________________________________________
+		else if(isIo == 1)
+		{
+			
+		}
+		else if(isAmp != 0)
+		{
+			char** sendMe = copyToks(resultTokens.parseTokens, resultTokens.tokenAmount - 1);
+			int amount = resultTokens.tokenAmount - 1;
+			send2back(sendMe, queue, amount, imHigh, next);
+			next++;
+			imHigh++;			
+		}
+		else if(isDire != 0)
+		{
+			parseIO(resultTokens);
+		}
+		else if(isPipe != 0)
+		{
+			parsePipe(resultTokens);
+		}
+		else
+		{
+			execute(resultTokens.parseTokens);
+		}
 
-	parseIO(resultTokens);	//check for <,> redirection
-	parsePipe(resultTokens); 	//check for pipes
-
-
-        //(5) execution_____________________________________________________________________
-        
-		//if(resultTokens.tokenAmount == 1)
-			//execute(resultTokens.parseTokens);
-
-        //(7) Background Processing_________________________________________________________
-        
-		// If isBackground() == true
-		char** sendMe = copyToks(resultTokens.parseTokens, resultTokens.tokenAmount - 1);
-		int amount = resultTokens.tokenAmount - 1;
-		send2back(sendMe, queue, amount, imHigh, next);
-		next++;
-		imHigh++;
 		
 		// Check to see if the next background process in the queue has terminated.
 		if(next != 0)
 		{
-			int ready = waitpid(queue[0].pid, NULL, WNOHANG);
+			ready = waitpid(queue[0].pid, NULL, WNOHANG);
 			if(ready == queue[0].pid)
 			{
 				// Background process finished
@@ -100,6 +145,7 @@ int main()
 				}	
 			}
 		}
+		
     }
 	
 	free(queue);

@@ -3,8 +3,6 @@
 //execute
 void execute(char **command)
 {
-
-
     int status;
     pid_t pid = fork();
     if (pid == -1)
@@ -153,69 +151,81 @@ return;
 
 }
 
-parseResult parsePipe(parseResult resultTokens){
+parseResult parsePipe(parseResult resultTokens)
+{
 
-//Error Testing
+	//Error Testing
    
-   char* temp;
-   char* temp2;
+	char* temp;
+	char* temp2;
+	
+	for(int i = 0;i<resultTokens.tokenAmount;i++)
+	{
+		if(i==0)
+		{
+			if(strpbrk(resultTokens.parseTokens[0], "|") != NULL)
+			{
+				printf("Pipe Error\n");
+				return resultTokens;
+			} 
+		}
+		else if(i == 0 && resultTokens.tokenAmount == 1)
+		{
+			printf("HERE\n");
+			return resultTokens;
+		}
+		else if(i==(resultTokens.tokenAmount) - 1 && i!=0)
+		{
+			if(strpbrk(resultTokens.parseTokens[i], "|") !=NULL)
+			{
+				printf("Pipe Error\n");
+				return resultTokens;
+			}
+		}
+	}
 
-   for(int i = 0;i<resultTokens.tokenAmount;i++){
-      
-      if(i==0){
-         if(strpbrk(resultTokens.parseTokens[0], "|") != NULL){
-	    printf("Pipe Error\n");
-	    return resultTokens;
-	 } 
-      }
-      else if(i == 0 && resultTokens.tokenAmount == 1){
-	printf("HERE\n");
-	 return resultTokens;
-      }
-      else if(i==(resultTokens.tokenAmount) - 1 && i!=0){
-	 if(strpbrk(resultTokens.parseTokens[i], "|") !=NULL){
- 	    printf("Pipe Error\n");
-	    return resultTokens;
-	 }
-      }
-   }
-
-   temp = resultTokens.parseTokens[0];
-   temp2 = resultTokens.parseTokens[2];
-   if(resultTokens.tokenAmount != 1 && resultTokens.tokenAmount != 0)
+	temp = resultTokens.parseTokens[0];
+	temp2 = resultTokens.parseTokens[2];
+	if(resultTokens.tokenAmount != 1 && resultTokens.tokenAmount != 0)
       ourPipe(temp,temp2,resultTokens);
 
-return resultTokens;
+	return resultTokens;
 
 }
 
-void ourPipe(char* temp, char* temp2, parseResult resultTokens){
+void ourPipe(char* temp, char* temp2, parseResult resultTokens)
+{
 
-   int pipe(int pipefd[2]);
-   int fd[2];
+	int pipe(int pipefd[2]);
+	int fd[2];
 
-   if(fork()==0){
-      pipe(fd);
-      if(fork()==0){
-         close(1);
-	 dup(fd[1]);
-	 close(fd[0]);
-	 close(fd[1]);
-	 execute(resultTokens.parseTokens);
-         exit(1);
-         
-      }
-      else{
-         close(0);
-         dup(fd[0]);
-         close(fd[0]);
-         close(fd[1]);
-	 execute(resultTokens.parseTokens);
-	 exit(1);
-      } 
-   }
-   else
-      close(fd);
+	if(fork()==0)
+	{
+		pipe(fd);
+		if(fork()==0)
+		{
+			close(1);
+			dup(fd[1]);
+			close(fd[0]);
+			close(fd[1]);
+			execute(resultTokens.parseTokens);
+			exit(1); 
+		}
+		else
+		{
+			close(0);
+			dup(fd[0]);
+			close(fd[0]);
+			close(fd[1]);
+			execute(resultTokens.parseTokens);
+			exit(1);
+		} 
+	}
+	else
+	{
+		close(fd[0]);
+		close(fd[1]);
+	}
 
 }
 
@@ -233,7 +243,7 @@ void finish(Process* queue, int next)
 	strcpy(cmd, &queue[0].theToks[0][5]);
 	
 	// Print out the queue number.
-	printf("[%d]+\tDone\t[", queue[0].spot);
+	printf("[%d]+\t[", queue[0].spot);
 	// Print out the command.
 	printf("%s ", cmd);
 	// Print out the arguments.
@@ -256,12 +266,10 @@ void finish(Process* queue, int next)
 // Helper for send2back. Returns an exact copy of the instr array.
 char **copyToks(char **instr, int numToks)
 {
-    int i;
-
     char **new_arr = (char **)malloc((numToks) * sizeof(char *));
 
     //copy values into new array
-    for (i = 0; i < numToks; i++)
+    for (int i = 0; i < numToks; i++)
     {
         new_arr[i] = (char *)malloc((strlen(instr[i]) + 1) * sizeof(char));
         strcpy(new_arr[i], instr[i]);
@@ -447,7 +455,6 @@ void exitShell(struct timeval beginTime)
 //echo: needs the char** of tokens, and the size of the char**
 void echoShell(char **args, int argsNum)
 {
-    int i;
     //using char* to get the full token
     char *test;
 

@@ -17,7 +17,7 @@ parseResult parse()
 	printf("%s", hostname);		  //
 	printf(" :: ");				  //
 	printf("%s", cwd);			  //
-	printf("> ");				  //
+	printf("-> ");				  //
 	////////////////////////////////
 
 	int numI = 0; // number of tokens in an instruction
