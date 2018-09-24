@@ -320,17 +320,17 @@ char* prefixCommand(char* command)
     {
 	//CODY---------------------------------------------------------------------------------
 		
-		// char* prefix = getenv("PWD");	
+		 char* prefix = getenv("PWD");	
 
 
 	//-----------------------------------------------------------------------------------------
 
-        char *prefix = "/bin/";
+//        char *prefix = "/bin/";
         size_t length = strlen(command) + strlen(prefix) + 1;
         char *exCommand = malloc(sizeof(char) * length);
         strcpy(exCommand, prefix);
 
-		// exCommand[(strlen(prefix))] = '/';
+		 exCommand[(strlen(prefix))] = '/';
 
         strcat(exCommand, command);
         command = exCommand;
