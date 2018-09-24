@@ -4,11 +4,13 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <fcntl.h>
+
 
 //parser functions
 typedef struct parseResult {
@@ -67,6 +69,7 @@ char* environmentVariable(char* var);
 // Path resolution
 char* prefixCommand(char* command);
 char* resolvePath(char* pathToResolve);
-char *strrev(char *str); //implementation from S/O
+char *strrev(char *str); //implementation of std <string.h> func from S/O
+int isDirectory(char* path);
 
 #endif

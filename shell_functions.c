@@ -476,14 +476,18 @@ void echoShell(char **args, int argsNum)
 
 void cdShell(char *path)
 {
-    char directory[255];
 
-    printf("%s\n", path);
     path = resolvePath(path);
-     printf("%s\n", path);
     
-    if(chdir(path) != 0) {
-        printf("Error: %s does not exist!\n", directory);}
+    if (isDirectory(path) == 0)
+    {
+        printf("Error: %s is not a directory!\n", path);
+    }
+
+    if (chdir(path) != 0) {
+        printf("Error: %s does not exist!\n", path);
+    }
+
 
 }
 
@@ -500,4 +504,10 @@ char *strrev(char *str)
             *p1 ^= *p2;
       }
       return str;
+}
+// using stat to test if directory, 0 if its not
+int isDirectory(char* path) {
+   struct stat statbuffer;
+   stat(path, &statbuffer);
+   return S_ISDIR(statbuffer.st_mode);
 }

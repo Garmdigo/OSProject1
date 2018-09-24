@@ -40,3 +40,11 @@ Done:
     - Echo
 
       - void echoShell(char** args, int argsNum). Takes char** of tokens, and the size of the char**. Iterates through token list, check if each token is an environment variable. If the token is an environment variable, environmentVariable() is called and its value is printed. If the token is not an environment variable then no change is made and it is printed normally.
+    
+    - CD
+      
+      - void cdShell(char *path). Takes a path and attempts to change to it. If the path is not a directory or if it doesn't exist an error will be thrown
+
+      - char *resolvePath(char *pathToResolve). Takes a char * path and will attempt to resolve it to an absolute path.
+
+      

@@ -93,10 +93,10 @@ int main()
             {
                 printf("Error: Too many arguments\n");
             }
-            else if (resultTokens.tokenAmount == 0)
+           	else if (resultTokens.tokenAmount < 1)
             {
-                //cdShell(getenv("HOME"));
-            }
+				chdir(getenv("HOME"));
+            } 
             else {
                 cdShell(resultTokens.parseTokens[1]);
             }
