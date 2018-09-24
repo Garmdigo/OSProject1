@@ -1,10 +1,6 @@
 # OSProject1
 COP4610 Project 1 Repository
 
-
-Completed using linprog
-
-
 Member 1: Cody O'Connor 
 
 Member 2: Christian Watkins Parts 1,2,3,4,9
@@ -33,6 +29,9 @@ $> make clean
 
 Known Bugs:
 - cd without any arguments segfaults
+
+
+Completed using linprog
 
 
 - Specific Parts:
@@ -74,4 +73,8 @@ Known Bugs:
       - void cdShell(char *path). Takes a path and attempts to change to it. If the path is not a directory or if it doesn't exist an error will be thrown
 
       - char *resolvePath(char *pathToResolve). Takes a char * path and will attempt to resolve it to an absolute path.
+
+      - char *strrev(char *str). Reverses a string, is just an implementation of the strrev found in string.h
+
+      - int isDirectory(char* path). Uses stat to gather data and then the S_ISDIR macro to determine if the directory is a directory
 
